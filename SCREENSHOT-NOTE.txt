@@ -1,0 +1,12 @@
+SCREENSHOT.PNG NOTE
+==================
+
+WordPress themes traditionally include a screenshot.png file (1200x900px) showing the theme's homepage.
+
+To add a screenshot:
+1. Take a screenshot of the homepage when it's set up
+2. Resize to 1200x900 pixels
+3. Save as "screenshot.png" in this folder
+4. This will appear in WordPress Appearance > Themes
+
+For now, the theme will work without it, but adding one makes it look more professional in the WordPress admin.
