@@ -3,6 +3,83 @@
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- LocalBusiness Schema Markup for Local SEO -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "Tie the Celtic Knot",
+      "description": "Licensed Ontario Celebrant specializing in bespoke wedding ceremonies, handfasting rituals, child naming ceremonies, and memorials. Inclusive, nature-based, and Celtic-inspired celebrations.",
+      "url": "https://tiethecelticknot.ca",
+      "telephone": "+1-647-505-1834",
+      "email": "kerstin@tiethecelticknot.ca",
+      "image": "<?php echo get_template_directory_uri(); ?>/images/logoceltic.svg",
+      "logo": "<?php echo get_template_directory_uri(); ?>/images/logoceltic.svg",
+      "priceRange": "$$",
+      "areaServed": {
+        "@type": "State",
+        "name": "Ontario",
+        "address": {
+          "@type": "PostalAddress",
+          "addressCountry": "CA",
+          "addressRegion": "ON"
+        }
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "09:00",
+        "closes": "21:00"
+      },
+      "serviceType": [
+        "Wedding Ceremonies",
+        "Handfasting Ceremonies",
+        "Child Naming Ceremonies",
+        "Memorial Services",
+        "Vow Renewals"
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Ceremony Services",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Essential Ceremony",
+              "description": "Simple, heartfelt ceremony crafted just for you"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Complete Ceremony",
+              "description": "Full ceremony with handfasting ritual"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Bespoke Celebration",
+              "description": "Fully customized ceremony with all the details"
+            }
+          }
+        ]
+      }
+    }
+    </script>
+
     <?php wp_head(); ?>
 </head>
 <body <?php body_class(); ?>>
