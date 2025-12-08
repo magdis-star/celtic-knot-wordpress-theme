@@ -4,22 +4,13 @@
 <section class="hero-section" style="background-image: linear-gradient(rgba(30, 58, 45, 0.75), rgba(30, 58, 45, 0.75)), url('<?php echo get_template_directory_uri(); ?>/images/photo1celtic.png'); background-size: cover; background-position: center;">
     <div class="hero-content">
         <h1 class="hero-title">
-            <?php
-            $hero_title = get_field('hero_title', 'option');
-            echo $hero_title ? esc_html($hero_title) : 'Your Love Story.<br>Woven with Meaning and Celtic Spirit.';
-            ?>
+            <?php echo esc_html(celtic_knot_get_field('hero_title', 'option', 'Your Love Story. Woven with Meaning and Celtic Spirit.')); ?>
         </h1>
         <p class="hero-description">
-            <?php
-            $hero_description = get_field('hero_description', 'option');
-            echo $hero_description ? esc_html($hero_description) : 'Licensed Humanist Officiant Kerstin Sandstrom specializes in bespoke ceremonies, from ancient handfasting rituals to modern, inclusive celebrations, grounded in nature and authenticity.';
-            ?>
+            <?php echo esc_html(celtic_knot_get_field('hero_description', 'option', 'Licensed Humanist Officiant Kerstin Sandstrom specializes in bespoke ceremonies, from ancient handfasting rituals to modern, inclusive celebrations, grounded in nature and authenticity.')); ?>
         </p>
         <a href="#contact" class="button">
-            <?php
-            $hero_button = get_field('hero_button_text', 'option');
-            echo $hero_button ? esc_html($hero_button) : 'Inquire & Check Availability';
-            ?>
+            <?php echo esc_html(celtic_knot_get_field('hero_button_text', 'option', 'Inquire & Check Availability')); ?>
         </a>
     </div>
 </section>
@@ -479,8 +470,7 @@
             <div>
                 <div style="border-radius: 0.75rem; box-shadow: 0 25px 50px rgba(0,0,0,0.25); overflow: hidden; border: 4px solid #c8d4c0;">
                     <?php
-                    $story_image = get_field('story_image', 'option');
-                    $image_url = $story_image ? $story_image : get_template_directory_uri() . '/images/KerstinO-scaled-e1603739338128-300x300-1.jpg';
+                    $image_url = celtic_knot_get_field('story_image', 'option', get_template_directory_uri() . '/images/KerstinO-scaled-e1603739338128-300x300-1.jpg');
                     ?>
                     <img src="<?php echo esc_url($image_url); ?>" alt="Kerstin Sandstrom - Licensed Ontario Celebrant">
                 </div>
@@ -489,19 +479,13 @@
             <!-- Bio Content -->
             <div style="display: flex; flex-direction: column; gap: 1.5rem;">
                 <span class="section-label" style="text-align: left;">
-                    <?php
-                    $story_label = get_field('story_label', 'option');
-                    echo $story_label ? esc_html($story_label) : 'Meet Kerstin';
-                    ?>
+                    <?php echo esc_html(celtic_knot_get_field('story_label', 'option', 'Meet Kerstin')); ?>
                 </span>
                 <h2 style="font-size: 2.5rem; font-weight: bold; color: #1e3a2d; font-family: Georgia, serif; text-align: left; margin: 0;">
-                    <?php
-                    $story_title = get_field('story_title', 'option');
-                    echo $story_title ? esc_html($story_title) : 'The Officiant Behind the Knot';
-                    ?>
+                    <?php echo esc_html(celtic_knot_get_field('story_title', 'option', 'The Officiant Behind the Knot')); ?>
                 </h2>
                 <?php
-                $story_content = get_field('story_content', 'option');
+                $story_content = celtic_knot_get_field('story_content', 'option', '');
                 if ($story_content) {
                     echo wp_kses_post($story_content);
                 } else {
@@ -519,10 +503,7 @@
                 }
                 ?>
                 <a href="#contact" style="display: inline-flex; align-items: center; color: #1e3a2d; font-weight: 600; text-decoration: none;">
-                    <?php
-                    $story_button = get_field('story_button_text', 'option');
-                    echo $story_button ? esc_html($story_button) : 'Start the Conversation Today';
-                    ?>
+                    <?php echo esc_html(celtic_knot_get_field('story_button_text', 'option', 'Start the Conversation Today')); ?>
                     <span style="margin-left: 0.5rem;">→</span>
                 </a>
             </div>

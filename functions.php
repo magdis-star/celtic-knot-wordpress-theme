@@ -3,6 +3,15 @@
  * Tie the Celtic Knot Theme Functions
  */
 
+// Safe get_field wrapper for ACF
+function celtic_knot_get_field($field_name, $post_id = false, $default = '') {
+    if (function_exists('get_field')) {
+        $value = get_field($field_name, $post_id);
+        return $value ? $value : $default;
+    }
+    return $default;
+}
+
 // Theme Setup
 function celtic_knot_setup() {
     // Add theme support
@@ -194,11 +203,14 @@ add_filter('user_trailingslashit', 'celtic_knot_add_trailing_slash');
 
 // Enqueue styles and scripts
 function celtic_knot_scripts() {
-    // Main stylesheet with timestamp to prevent caching
-    wp_enqueue_style('celtic-knot-style', get_stylesheet_uri(), array(), filemtime(get_template_directory() . '/style.css'));
+    // Get theme version
+    $theme_version = wp_get_theme()->get('Version');
+
+    // Main stylesheet with version for cache busting
+    wp_enqueue_style('celtic-knot-style', get_stylesheet_uri(), array(), $theme_version);
 
     // JavaScript for smooth scrolling
-    wp_enqueue_script('celtic-knot-script', get_template_directory_uri() . '/js/script.js', array(), filemtime(get_template_directory() . '/js/script.js'), true);
+    wp_enqueue_script('celtic-knot-script', get_template_directory_uri() . '/js/script.js', array(), $theme_version, true);
 }
 add_action('wp_enqueue_scripts', 'celtic_knot_scripts');
 
