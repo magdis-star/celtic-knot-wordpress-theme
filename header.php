@@ -3,6 +3,7 @@
 <head>
     <meta charset="<?php bloginfo('charset'); ?>">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-site-verification" content="U3Sx5ezx9JJMdYI6GaZe7-ievKdukXLRYIOHikXyqHw" />
 
     <!-- LocalBusiness Schema Markup for Local SEO -->
     <script type="application/ld+json">

@@ -314,6 +314,93 @@ function celtic_knot_register_gallery() {
 }
 add_action('init', 'celtic_knot_register_gallery');
 
+// Register custom post type for Service Packages
+function celtic_knot_register_packages() {
+    $args = array(
+        'labels' => array(
+            'name' => __('Service Packages', 'celtic-knot'),
+            'singular_name' => __('Package', 'celtic-knot'),
+            'add_new' => __('Add New Package', 'celtic-knot'),
+            'add_new_item' => __('Add New Package', 'celtic-knot'),
+            'edit_item' => __('Edit Package', 'celtic-knot'),
+        ),
+        'public' => true,
+        'has_archive' => false,
+        'menu_icon' => 'dashicons-star-filled',
+        'supports' => array('title', 'editor', 'page-attributes'),
+        'show_in_rest' => true,
+    );
+    register_post_type('service_package', $args);
+}
+add_action('init', 'celtic_knot_register_packages');
+
+// Add meta boxes for package details
+function celtic_knot_add_package_meta_boxes() {
+    add_meta_box(
+        'package_details',
+        'Package Details',
+        'celtic_knot_package_details_callback',
+        'service_package',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'celtic_knot_add_package_meta_boxes');
+
+// Meta box callback
+function celtic_knot_package_details_callback($post) {
+    wp_nonce_field('celtic_knot_save_package_meta', 'celtic_knot_package_nonce');
+
+    $price = get_post_meta($post->ID, '_package_price', true);
+    $most_popular = get_post_meta($post->ID, '_package_most_popular', true);
+    $features = get_post_meta($post->ID, '_package_features', true);
+    ?>
+    <p>
+        <label for="package_price"><strong>Price (numbers only, e.g., 650):</strong></label><br>
+        <input type="text" id="package_price" name="package_price" value="<?php echo esc_attr($price); ?>" style="width: 200px;">
+    </p>
+    <p>
+        <label>
+            <input type="checkbox" name="package_most_popular" value="1" <?php checked($most_popular, '1'); ?>>
+            <strong>Mark as "Most Popular"</strong> (only check one package)
+        </label>
+    </p>
+    <p>
+        <label for="package_features"><strong>Features (one per line):</strong></label><br>
+        <textarea id="package_features" name="package_features" rows="10" style="width: 100%;"><?php echo esc_textarea($features); ?></textarea>
+        <em>Enter each feature on a new line. These will appear as checkmarks.</em>
+    </p>
+    <?php
+}
+
+// Save package meta
+function celtic_knot_save_package_meta($post_id) {
+    if (!isset($_POST['celtic_knot_package_nonce']) || !wp_verify_nonce($_POST['celtic_knot_package_nonce'], 'celtic_knot_save_package_meta')) {
+        return;
+    }
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+
+    if (isset($_POST['package_price'])) {
+        update_post_meta($post_id, '_package_price', sanitize_text_field($_POST['package_price']));
+    }
+
+    if (isset($_POST['package_most_popular'])) {
+        update_post_meta($post_id, '_package_most_popular', '1');
+    } else {
+        update_post_meta($post_id, '_package_most_popular', '0');
+    }
+
+    if (isset($_POST['package_features'])) {
+        update_post_meta($post_id, '_package_features', sanitize_textarea_field($_POST['package_features']));
+    }
+}
+add_action('save_post_service_package', 'celtic_knot_save_package_meta');
+
 // Add ACF options page for homepage settings (requires ACF plugin)
 if (function_exists('acf_add_options_page')) {
     acf_add_options_page(array(

@@ -118,9 +118,145 @@
             <p class="section-description">Choose the package that best suits your ceremony needs</p>
         </div>
 
-        <div class="grid-pricing">
-            
-            <!-- Package 1 - Deluxe - MOST POPULAR -->
+        <?php
+        // Query service packages
+        $packages_query = new WP_Query(array(
+            'post_type' => 'service_package',
+            'posts_per_page' => -1,
+            'post_status' => 'publish',
+            'orderby' => 'menu_order',
+            'order' => 'ASC'
+        ));
+        ?>
+
+        <?php if ($packages_query->have_posts()) : ?>
+            <div class="grid-pricing">
+                <?php while ($packages_query->have_posts()) : $packages_query->the_post();
+                    $price = get_post_meta(get_the_ID(), '_package_price', true);
+                    $most_popular = get_post_meta(get_the_ID(), '_package_most_popular', true);
+                    $features = get_post_meta(get_the_ID(), '_package_features', true);
+                    $features_array = !empty($features) ? explode("\n", trim($features)) : array();
+
+                    $is_popular = ($most_popular == '1');
+                ?>
+
+                <!-- Package: <?php the_title(); ?> -->
+                <div style="background: <?php echo $is_popular ? 'linear-gradient(to bottom right, #1e3a2d, #0f1f19)' : 'white'; ?>; color: <?php echo $is_popular ? 'white' : '#374151'; ?>; padding: 2rem; border-radius: 0.75rem; box-shadow: <?php echo $is_popular ? '0 10px 25px rgba(0,0,0,0.2)' : '0 10px 15px rgba(0,0,0,0.1)'; ?>; border: <?php echo $is_popular ? '4px solid #1e3a2d' : '2px solid #c8d4c0'; ?>; position: relative;">
+                    <?php if ($is_popular) : ?>
+                        <div style="position: absolute; top: 0; right: 0; background: #fbbf24; color: #1e3a2d; padding: 0.25rem 1rem; font-size: 0.75rem; font-weight: bold; border-bottom-left-radius: 0.5rem;">MOST POPULAR</div>
+                    <?php endif; ?>
+
+                    <h3 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem; font-family: Georgia, serif; color: <?php echo $is_popular ? 'white' : '#1e3a2d'; ?>;"><?php the_title(); ?></h3>
+
+                    <?php if ($price) : ?>
+                        <div style="font-size: 3rem; font-weight: bold; margin-bottom: 1.5rem; color: <?php echo $is_popular ? 'white' : '#1e3a2d'; ?>;">$<?php echo esc_html($price); ?></div>
+                    <?php endif; ?>
+
+                    <?php if (!empty($features_array)) : ?>
+                        <ul style="list-style: none; padding: 0; <?php echo $is_popular ? 'margin-bottom: 1.5rem;' : ''; ?> line-height: 1.8; font-size: 0.9rem;">
+                            <?php foreach ($features_array as $index => $feature) :
+                                $feature = trim($feature);
+                                if (empty($feature)) continue;
+                                $is_last = ($index === count($features_array) - 1);
+                            ?>
+                                <li style="display: flex; align-items: flex-start; <?php echo !$is_last ? 'margin-bottom: 0.75rem;' : ''; ?>">
+                                    <svg style="width: 1.25rem; height: 1.25rem; color: <?php echo $is_popular ? '#fbbf24' : '#1e3a2d'; ?>; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                                    </svg>
+                                    <span><?php echo esc_html($feature); ?></span>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php endif; ?>
+
+                    <a href="#contact" style="display: block; width: 100%; text-align: center; background: <?php echo $is_popular ? '#fbbf24' : '#1e3a2d'; ?>; color: <?php echo $is_popular ? '#1e3a2d' : 'white'; ?>; padding: 0.75rem; border-radius: 0.5rem; font-weight: bold; text-decoration: none; <?php echo !$is_popular ? 'margin-top: 1.5rem;' : ''; ?> transition: background-color 0.3s;">Book This Package</a>
+                </div>
+
+                <?php endwhile; wp_reset_postdata(); ?>
+            </div>
+        <?php else : ?>
+            <!-- Fallback: Show hardcoded packages if none exist yet -->
+            <div class="grid-pricing">
+
+            <!-- Package 1 - Full Service Wedding -->
+            <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 10px 15px rgba(0,0,0,0.1); border: 2px solid #c8d4c0;">
+                <h3 style="font-size: 1.5rem; font-weight: bold; color: #1e3a2d; margin-bottom: 0.5rem; font-family: Georgia, serif;">Full Service Wedding</h3>
+                <div style="font-size: 3rem; font-weight: bold; color: #1e3a2d; margin-bottom: 1.5rem;">$650</div>
+                <ul style="list-style: none; padding: 0; color: #374151; line-height: 1.8; font-size: 0.9rem;">
+                    <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
+                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>Initial meeting included</span>
+                    </li>
+                    <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
+                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>One consultation (one to two weeks before)</span>
+                    </li>
+                    <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
+                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>Unlimited phone calls & emails</span>
+                    </li>
+                    <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
+                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>Customised service with rituals & traditional elements</span>
+                    </li>
+                    <li style="display: flex; align-items: flex-start;">
+                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>Paperwork filled out & mailed within 24 hours</span>
+                    </li>
+                </ul>
+                <a href="#contact" style="display: block; width: 100%; text-align: center; background: #1e3a2d; color: white; padding: 0.75rem; border-radius: 0.5rem; font-weight: bold; text-decoration: none; margin-top: 1.5rem; transition: background-color 0.3s;">Book This Package</a>
+            </div>
+
+            <!-- Package 2 - Custom Ceremony -->
+            <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 10px 15px rgba(0,0,0,0.1); border: 2px solid #c8d4c0;">
+                <h3 style="font-size: 1.5rem; font-weight: bold; color: #1e3a2d; margin-bottom: 0.5rem; font-family: Georgia, serif;">Custom Ceremony</h3>
+                <div style="font-size: 3rem; font-weight: bold; color: #1e3a2d; margin-bottom: 1.5rem;">$450</div>
+                <ul style="list-style: none; padding: 0; color: #374151; line-height: 1.8; font-size: 0.9rem;">
+                    <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
+                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>Initial meeting included</span>
+                    </li>
+                    <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
+                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>One consultation (one to two weeks before)</span>
+                    </li>
+                    <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
+                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>Unlimited phone calls & emails</span>
+                    </li>
+                    <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
+                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>Customised service with rituals & traditional elements</span>
+                    </li>
+                    <li style="display: flex; align-items: flex-start;">
+                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>Paperwork filled out & mailed within 24 hours</span>
+                    </li>
+                </ul>
+                <a href="#contact" style="display: block; width: 100%; text-align: center; background: #1e3a2d; color: white; padding: 0.75rem; border-radius: 0.5rem; font-weight: bold; text-decoration: none; margin-top: 1.5rem; transition: background-color 0.3s;">Book This Package</a>
+            </div>
+
+            <!-- Package 3 - Deluxe - MOST POPULAR -->
             <div style="background: linear-gradient(to bottom right, #1e3a2d, #0f1f19); color: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 10px 25px rgba(0,0,0,0.2); position: relative; border: 4px solid #1e3a2d;">
                 <div style="position: absolute; top: 0; right: 0; background: #fbbf24; color: #1e3a2d; padding: 0.25rem 1rem; font-size: 0.75rem; font-weight: bold; border-bottom-left-radius: 0.5rem;">MOST POPULAR</div>
                 <h3 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem; font-family: Georgia, serif;">Deluxe Wedding Ceremony</h3>
@@ -166,82 +302,6 @@
                 <a href="#contact" style="display: block; width: 100%; text-align: center; background: #fbbf24; color: #1e3a2d; padding: 0.75rem; border-radius: 0.5rem; font-weight: bold; text-decoration: none;">Book This Package</a>
             </div>
 
-            <!-- Package 2 - Full Service Wedding -->
-            <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 10px 15px rgba(0,0,0,0.1); border: 2px solid #c8d4c0;">
-                <h3 style="font-size: 1.5rem; font-weight: bold; color: #1e3a2d; margin-bottom: 0.5rem; font-family: Georgia, serif;">Full Service Wedding</h3>
-                <div style="font-size: 3rem; font-weight: bold; color: #1e3a2d; margin-bottom: 1.5rem;">$650</div>
-                <ul style="list-style: none; padding: 0; color: #374151; line-height: 1.8; font-size: 0.9rem;">
-                    <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
-                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>Initial meeting included</span>
-                    </li>
-                    <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
-                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>One consultation (one to two weeks before)</span>
-                    </li>
-                    <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
-                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>Unlimited phone calls & emails</span>
-                    </li>
-                    <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
-                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>Customised service with rituals & traditional elements</span>
-                    </li>
-                    <li style="display: flex; align-items: flex-start;">
-                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>Paperwork filled out & mailed within 24 hours</span>
-                    </li>
-                </ul>
-            </div>
-
-            <!-- Package 3 - Custom Ceremony -->
-            <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 10px 15px rgba(0,0,0,0.1); border: 2px solid #c8d4c0;">
-                <h3 style="font-size: 1.5rem; font-weight: bold; color: #1e3a2d; margin-bottom: 0.5rem; font-family: Georgia, serif;">Custom Ceremony</h3>
-                <div style="font-size: 3rem; font-weight: bold; color: #1e3a2d; margin-bottom: 1.5rem;">$450</div>
-                <ul style="list-style: none; padding: 0; color: #374151; line-height: 1.8; font-size: 0.9rem;">
-                    <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
-                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>Initial meeting included</span>
-                    </li>
-                    <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
-                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>One consultation (one to two weeks before)</span>
-                    </li>
-                    <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
-                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>Unlimited phone calls & emails</span>
-                    </li>
-                    <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
-                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>Customised service with rituals & traditional elements</span>
-                    </li>
-                    <li style="display: flex; align-items: flex-start;">
-                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>Paperwork filled out & mailed within 24 hours</span>
-                    </li>
-                </ul>
-            </div>
-
             <!-- Package 4 - Basic Signing Package -->
             <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 10px 15px rgba(0,0,0,0.1); border: 2px solid #c8d4c0;">
                 <h3 style="font-size: 1.5rem; font-weight: bold; color: #1e3a2d; margin-bottom: 0.5rem; font-family: Georgia, serif;">Basic Signing Package</h3>
@@ -272,9 +332,11 @@
                         <span>Paperwork filled out & mailed within 24 hours</span>
                     </li>
                 </ul>
+                <a href="#contact" style="display: block; width: 100%; text-align: center; background: #1e3a2d; color: white; padding: 0.75rem; border-radius: 0.5rem; font-weight: bold; text-decoration: none; margin-top: 1.5rem; transition: background-color 0.3s;">Book This Package</a>
             </div>
 
         </div>
+        <?php endif; ?>
     </div>
 </section>
 
@@ -330,7 +392,7 @@
         // Query gallery images
         $gallery_images = new WP_Query(array(
             'post_type' => 'gallery_image',
-            'posts_per_page' => 6,
+            'posts_per_page' => 9,
             'post_status' => 'publish',
             'orderby' => 'date',
             'order' => 'DESC'
@@ -564,6 +626,18 @@
 </section>
 
 <!-- Blog Section -->
+<?php
+// Query the latest 3 blog posts
+$blog_posts = new WP_Query(array(
+    'post_type' => 'post',
+    'posts_per_page' => 3,
+    'post_status' => 'publish',
+    'orderby' => 'date',
+    'order' => 'DESC'
+));
+?>
+
+<?php if ($blog_posts->have_posts()) : ?>
 <section id="blog" class="section" style="background-color: white;">
     <div class="container">
         <div class="section-header">
@@ -571,19 +645,6 @@
             <h2 class="section-title">Latest Articles & Insights</h2>
             <p class="section-description">Tips, ideas, and stories about meaningful ceremonies</p>
         </div>
-
-        <?php
-        // Query the latest 3 blog posts
-        $blog_posts = new WP_Query(array(
-            'post_type' => 'post',
-            'posts_per_page' => 3,
-            'post_status' => 'publish',
-            'orderby' => 'date',
-            'order' => 'DESC'
-        ));
-        ?>
-
-        <?php if ($blog_posts->have_posts()) : ?>
             <div class="grid-blog">
                 <?php while ($blog_posts->have_posts()) : $blog_posts->the_post(); ?>
                     <article class="blog-card">
@@ -630,14 +691,10 @@
             <div style="text-align: center; margin-top: 3rem;">
                 <a href="<?php echo get_permalink(get_option('page_for_posts')); ?>" class="button">View All Articles</a>
             </div>
-        <?php else : ?>
-            <div style="text-align: center; padding: 3rem; color: #666;">
-                <p>No blog posts yet. Check back soon for ceremony tips and inspiration!</p>
-            </div>
-        <?php endif; ?>
         <?php wp_reset_postdata(); ?>
     </div>
 </section>
+<?php endif; ?>
 
 <!-- Contact Section -->
 <section id="contact" class="section" style="background-color: #f9fafb;">
@@ -649,34 +706,19 @@
         </div>
 
         <div style="max-width: 600px; margin: 0 auto;">
-            <form action="https://formspree.io/f/xzbwqelz" method="POST" id="contact-form">
-                <div style="margin-bottom: 1rem;">
-                    <label for="name" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Your Name *</label>
-                    <input type="text" id="name" name="name" required style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 0.5rem; font-size: 1rem;">
-                </div>
-
-                <div style="margin-bottom: 1rem;">
-                    <label for="email" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Email *</label>
-                    <input type="email" id="email" name="email" required style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 0.5rem; font-size: 1rem;">
-                </div>
-
-                <div style="margin-bottom: 1rem;">
-                    <label for="phone" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Phone Number</label>
-                    <input type="tel" id="phone" name="phone" style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 0.5rem; font-size: 1rem;">
-                </div>
-
-                <div style="margin-bottom: 1rem;">
-                    <label for="date" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Ceremony Date</label>
-                    <input type="date" id="date" name="date" style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 0.5rem; font-size: 1rem;">
-                </div>
-
-                <div style="margin-bottom: 1rem;">
-                    <label for="message" style="display: block; margin-bottom: 0.5rem; font-weight: 600;">Tell me about your ceremony *</label>
-                    <textarea id="message" name="message" rows="6" required style="width: 100%; padding: 0.75rem; border: 1px solid #ddd; border-radius: 0.5rem; font-size: 1rem; font-family: inherit;"></textarea>
-                </div>
-
-                <button type="submit" class="button" style="width: 100%;">Send Message</button>
-            </form>
+            <?php
+            // Use Contact Form 7 shortcode if form exists, otherwise show fallback
+            if (shortcode_exists('contact-form-7')) {
+                // Contact Form 7 form ID: ef53772
+                echo do_shortcode('[contact-form-7 id="ef53772" title="Contact form 1"]');
+            } else {
+                // Fallback message if Contact Form 7 is not configured
+                echo '<div style="background: #fff3cd; border: 1px solid #ffc107; padding: 2rem; border-radius: 0.5rem; text-align: center;">';
+                echo '<p style="margin: 0; color: #856404;"><strong>Contact form needs configuration.</strong></p>';
+                echo '<p style="margin: 0.5rem 0 0; color: #856404;">Please email directly: <a href="mailto:kerstin@tiethecelticknot.ca" style="color: #1e3a2d; font-weight: 600;">kerstin@tiethecelticknot.ca</a></p>';
+                echo '</div>';
+            }
+            ?>
 
             <!-- Social Media Call-out -->
             <div style="margin-top: 3rem; text-align: center;">
