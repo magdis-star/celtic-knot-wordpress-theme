@@ -178,10 +178,10 @@
             <!-- Fallback: Show hardcoded packages if none exist yet -->
             <div class="grid-pricing">
 
-            <!-- Package 1 - Full Service Wedding -->
+            <!-- Package 1 - Basic Signing Package -->
             <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 10px 15px rgba(0,0,0,0.1); border: 2px solid #c8d4c0;">
-                <h3 style="font-size: 1.5rem; font-weight: bold; color: #1e3a2d; margin-bottom: 0.5rem; font-family: Georgia, serif;">Full Service Wedding</h3>
-                <div style="font-size: 3rem; font-weight: bold; color: #1e3a2d; margin-bottom: 1.5rem;">$650</div>
+                <h3 style="font-size: 1.5rem; font-weight: bold; color: #1e3a2d; margin-bottom: 0.5rem; font-family: Georgia, serif;">Basic Signing Package</h3>
+                <div style="font-size: 3rem; font-weight: bold; color: #1e3a2d; margin-bottom: 1.5rem;">$300</div>
                 <ul style="list-style: none; padding: 0; color: #374151; line-height: 1.8; font-size: 0.9rem;">
                     <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
                         <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -200,12 +200,6 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
                         </svg>
                         <span>Unlimited phone calls & emails</span>
-                    </li>
-                    <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
-                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>Customised service with rituals & traditional elements</span>
                     </li>
                     <li style="display: flex; align-items: flex-start;">
                         <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -256,11 +250,11 @@
                 <a href="#contact" style="display: block; width: 100%; text-align: center; background: #1e3a2d; color: white; padding: 0.75rem; border-radius: 0.5rem; font-weight: bold; text-decoration: none; margin-top: 1.5rem; transition: background-color 0.3s;">Book This Package</a>
             </div>
 
-            <!-- Package 3 - Deluxe - MOST POPULAR -->
+            <!-- Package 3 - Full Service Wedding - MOST POPULAR -->
             <div style="background: linear-gradient(to bottom right, #1e3a2d, #0f1f19); color: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 10px 25px rgba(0,0,0,0.2); position: relative; border: 4px solid #1e3a2d;">
                 <div style="position: absolute; top: 0; right: 0; background: #fbbf24; color: #1e3a2d; padding: 0.25rem 1rem; font-size: 0.75rem; font-weight: bold; border-bottom-left-radius: 0.5rem;">MOST POPULAR</div>
-                <h3 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem; font-family: Georgia, serif;">Deluxe Wedding Ceremony</h3>
-                <div style="font-size: 3rem; font-weight: bold; margin-bottom: 1.5rem;">$895</div>
+                <h3 style="font-size: 1.5rem; font-weight: bold; margin-bottom: 0.5rem; font-family: Georgia, serif;">Full Service Wedding</h3>
+                <div style="font-size: 3rem; font-weight: bold; margin-bottom: 1.5rem;">$650</div>
                 <ul style="list-style: none; padding: 0; margin-bottom: 1.5rem; line-height: 1.8; font-size: 0.9rem;">
                     <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
                         <svg style="width: 1.25rem; height: 1.25rem; color: #fbbf24; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -272,19 +266,13 @@
                         <svg style="width: 1.25rem; height: 1.25rem; color: #fbbf24; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
                         </svg>
-                        <span>Two more consultations (one month out & one to two weeks before)</span>
+                        <span>One consultation (one to two weeks before)</span>
                     </li>
                     <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
                         <svg style="width: 1.25rem; height: 1.25rem; color: #fbbf24; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
                         </svg>
                         <span>Unlimited phone calls & emails</span>
-                    </li>
-                    <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
-                        <svg style="width: 1.25rem; height: 1.25rem; color: #fbbf24; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <span>One rehearsal - includes wine & cheese for wedding party</span>
                     </li>
                     <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
                         <svg style="width: 1.25rem; height: 1.25rem; color: #fbbf24; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -302,10 +290,10 @@
                 <a href="#contact" style="display: block; width: 100%; text-align: center; background: #fbbf24; color: #1e3a2d; padding: 0.75rem; border-radius: 0.5rem; font-weight: bold; text-decoration: none;">Book This Package</a>
             </div>
 
-            <!-- Package 4 - Basic Signing Package -->
+            <!-- Package 4 - Deluxe Wedding Ceremony -->
             <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 10px 15px rgba(0,0,0,0.1); border: 2px solid #c8d4c0;">
-                <h3 style="font-size: 1.5rem; font-weight: bold; color: #1e3a2d; margin-bottom: 0.5rem; font-family: Georgia, serif;">Basic Signing Package</h3>
-                <div style="font-size: 3rem; font-weight: bold; color: #1e3a2d; margin-bottom: 1.5rem;">$300</div>
+                <h3 style="font-size: 1.5rem; font-weight: bold; color: #1e3a2d; margin-bottom: 0.5rem; font-family: Georgia, serif;">Deluxe Wedding Ceremony</h3>
+                <div style="font-size: 3rem; font-weight: bold; color: #1e3a2d; margin-bottom: 1.5rem;">$895</div>
                 <ul style="list-style: none; padding: 0; color: #374151; line-height: 1.8; font-size: 0.9rem;">
                     <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
                         <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -317,13 +305,25 @@
                         <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
                         </svg>
-                        <span>One consultation (one to two weeks before)</span>
+                        <span>Two more consultations (one month out & one to two weeks before)</span>
                     </li>
                     <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
                         <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
                         </svg>
                         <span>Unlimited phone calls & emails</span>
+                    </li>
+                    <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
+                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>One rehearsal - includes wine & cheese for wedding party</span>
+                    </li>
+                    <li style="display: flex; align-items: flex-start; margin-bottom: 0.75rem;">
+                        <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 13l4 4L19 7" />
+                        </svg>
+                        <span>Customised service with rituals & traditional elements</span>
                     </li>
                     <li style="display: flex; align-items: flex-start;">
                         <svg style="width: 1.25rem; height: 1.25rem; color: #1e3a2d; margin-right: 0.5rem; margin-top: 0.125rem; flex-shrink: 0;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
