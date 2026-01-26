@@ -47,17 +47,49 @@ Your client can:
 
 ---
 
-### 4. Services
-**Location:** Services > All Services > Add New
+### 4. Service Packages (Pricing)
+**Location:** Service Packages > All Packages > Add New
 
 Your client can:
-- Add new services
+- Add/edit/delete pricing packages
+- **Title field** = Package name (e.g., "Full Service Wedding")
+- **Content field** = Optional description
+- **Price field** = Price in dollars (numbers only, e.g., 650)
+- **Features field** = One feature per line (shown as checkmarks)
+- **Most Popular checkbox** = Highlights this package
+- **Order** = Use "Order" field to arrange packages left to right
+
+**Appears on:** Homepage pricing section
+
+---
+
+### 5. Other Services (Ceremonies)
+**Location:** Other Services > All Other Services > Add New
+**Icon:** People/groups icon (not to be confused with the star icon for packages)
+
+Your client can:
+- Add/edit/delete other ceremony types
 - **Title field** = Service name (e.g., "Child Naming Ceremonies")
 - **Content field** = Service description
-- **Featured Image** (optional) = Service icon/image
-- Delete or hide services
+- **Icon Type** = Choose icon (Child/Family, Heart, People, Celebration)
+- **Button Text** = Call-to-action text (e.g., "Celebrate Your Child")
+- **Order** = Use "Order" field to arrange services
 
-**Note:** Services are registered but not currently displayed on homepage. We can add them or keep them for future use.
+**Appears on:** Homepage "Other Meaningful Ceremonies" section
+
+---
+
+### 6. FAQs (Frequently Asked Questions)
+**Location:** FAQs > All FAQs > Add New
+**Icon:** Question mark/help icon
+
+Your client can:
+- Add/edit/delete FAQ questions and answers
+- **Title field** = The question (e.g., "How far in advance should I book?")
+- **Answer field** = The answer to the question
+- **Order** = Use "Order" field to arrange FAQs top to bottom
+
+**Appears on:** Homepage FAQ section
 
 ---
 
@@ -69,15 +101,17 @@ Your client can:
    - Main title
    - Description text
    - Button text
-   - **Where to edit:** Homepage Settings in WordPress admin
+   - **Where to edit:** Pages → Homepage Settings → Edit (scroll down to see ACF fields)
 
-2. **My Story Section**
+2. **My Story Section (About Me)**
    - Kerstin's photo (upload new image)
    - Section label
    - Section title
    - Full bio content (rich text editor)
    - Button text
-   - **Where to edit:** Homepage Settings in WordPress admin
+   - **Where to edit:** Pages → Homepage Settings → Edit (scroll down to see ACF fields)
+
+**Note:** "Homepage Settings" is a regular WordPress Page (found in Pages menu), NOT a special menu item. The theme automatically creates this page when activated. Just edit it like any other page, and scroll down to see the ACF fields for Hero and My Story sections.
 
 ---
 
@@ -86,10 +120,8 @@ Your client can:
 These are hard-coded to prevent accidental changes:
 
 1. **Wedding Spotlight Section** - Core messaging
-2. **Pricing Packages** - Strategic pricing (all 4 packages)
-3. **Process Section** - Fixed workflow steps
-4. **FAQ Section** - Carefully crafted Q&A
-5. **Contact Form** - Form structure and Formspree endpoint
+2. **Process Section** - Fixed workflow steps
+3. **Contact Form** - Form structure and Formspree endpoint
 
 **Why keep these hard-coded?**
 - Don't change frequently
@@ -108,12 +140,13 @@ With ACF plugin installed:
 - **Blog posts** - Unlimited posts with categories
 - **Testimonials** - Add/edit client reviews
 - **Gallery images** - Upload ceremony photos
+- **Service Packages** - All pricing packages fully editable
+- **Other Services** - Child Naming, Funerals, etc. fully editable
+- **FAQs** - All questions and answers fully editable
 
 ### 🔒 Strategic Content (Hard-coded by Design)
 - Wedding Spotlight messaging
-- Pricing packages (4 tiers)
 - Process steps
-- FAQ questions and answers
 - Contact form structure
 
 ### ✅ Technical Features
@@ -128,9 +161,10 @@ With ACF plugin installed:
 ## Perfect Balance
 
 This setup gives your client:
-- **Easy editing** of content that changes regularly (blog, testimonials, hero, bio)
-- **Protection** of strategic content (pricing, FAQ, process)
+- **Easy editing** of content that changes regularly (blog, testimonials, hero, bio, pricing, services, FAQs)
+- **Protection** of strategic content (process, core messaging)
 - **Simple interface** that's not overwhelming
 - **Professional results** without risk of breaking layouts
+- **Full control** over pricing, service offerings, and frequently asked questions
 
-When pricing or FAQ needs updates (rarely), you can update the code files directly.
+When process steps or core messaging need updates (rarely), you can update the code files directly.

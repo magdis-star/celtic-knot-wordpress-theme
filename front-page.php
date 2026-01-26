@@ -1,7 +1,7 @@
 <?php get_header(); ?>
 
 <!-- Hero Section -->
-<section class="hero-section" style="background-image: linear-gradient(rgba(30, 58, 45, 0.75), rgba(30, 58, 45, 0.75)), url('<?php echo get_template_directory_uri(); ?>/images/photo1celtic.png'); background-size: cover; background-position: center;">
+<section class="hero-section" style="background-image: linear-gradient(rgba(30, 58, 45, 0.75), rgba(30, 58, 45, 0.75)), url('<?php echo get_template_directory_uri(); ?>/images/photo1celtic.jpg'); background-size: cover; background-position: center;">
     <div class="hero-content">
         <h1 class="hero-title">
             <?php echo esc_html(celtic_knot_get_field('hero_title', 'option', 'Your Love Story. Woven with Meaning and Celtic Spirit.')); ?>
@@ -67,45 +67,116 @@
             <p class="section-description">Beyond weddings, I create heartfelt ceremonies for all of life's important moments</p>
         </div>
 
-        <div class="grid-services">
-            <!-- Child Naming -->
-            <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; border: 1px solid #c8d4c0; transition: box-shadow 0.3s;">
-                <div style="width: 7rem; height: 7rem; background: #1e3a2d; border-radius: 50%; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center;">
-                    <svg style="width: 4rem; height: 4rem; color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                </div>
-                <h3 style="font-size: 1.5rem; font-weight: 600; color: #1e3a2d; margin-bottom: 0.75rem; font-family: Georgia, serif;">Child Naming Ceremonies</h3>
-                <p style="color: #666; margin-bottom: 1rem; line-height: 1.6;">
-                    A non-religious, joyful celebration of new life. Honouring the child and welcoming them into the community with meaningful readings and symbolic acts.
-                </p>
-                <a href="#contact" style="color: #1e3a2d; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center;">
-                    Celebrate Your Child
-                    <svg style="width: 1rem; height: 1rem; margin-left: 0.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                </a>
-            </div>
+        <?php
+        // Query other services
+        $services_query = new WP_Query(array(
+            'post_type' => 'other_service',
+            'posts_per_page' => -1,
+            'post_status' => 'publish',
+            'orderby' => 'menu_order',
+            'order' => 'ASC'
+        ));
+        ?>
 
-            <!-- Funerals -->
-            <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; border: 1px solid #c8d4c0; transition: box-shadow 0.3s;">
-                <div style="width: 7rem; height: 7rem; background: #1e3a2d; border-radius: 50%; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center;">
-                    <svg style="width: 4rem; height: 4rem; color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                    </svg>
+        <?php if ($services_query->have_posts()) : ?>
+            <div class="grid-services">
+                <?php while ($services_query->have_posts()) : $services_query->the_post();
+                    $icon_type = get_post_meta(get_the_ID(), '_service_icon', true);
+                    $button_text = get_post_meta(get_the_ID(), '_service_button_text', true);
+
+                    // Default icon if none selected
+                    if (empty($icon_type)) {
+                        $icon_type = 'child';
+                    }
+
+                    // Default button text if none provided
+                    if (empty($button_text)) {
+                        $button_text = 'Learn More';
+                    }
+
+                    // Set icon SVG based on type
+                    $icon_svg = '';
+                    switch ($icon_type) {
+                        case 'child':
+                            $icon_svg = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />';
+                            break;
+                        case 'heart':
+                            $icon_svg = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />';
+                            break;
+                        case 'users':
+                            $icon_svg = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />';
+                            break;
+                        case 'celebrate':
+                            $icon_svg = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />';
+                            break;
+                        default:
+                            $icon_svg = '<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />';
+                    }
+                ?>
+
+                <!-- Service: <?php the_title(); ?> -->
+                <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; border: 1px solid #c8d4c0; transition: box-shadow 0.3s;">
+                    <div style="width: 7rem; height: 7rem; background: #1e3a2d; border-radius: 50%; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center;">
+                        <svg style="width: 4rem; height: 4rem; color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <?php echo $icon_svg; ?>
+                        </svg>
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-weight: 600; color: #1e3a2d; margin-bottom: 0.75rem; font-family: Georgia, serif;"><?php the_title(); ?></h3>
+                    <p style="color: #666; margin-bottom: 1rem; line-height: 1.6;">
+                        <?php echo wp_kses_post(get_the_content()); ?>
+                    </p>
+                    <a href="#contact" style="color: #1e3a2d; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center;">
+                        <?php echo esc_html($button_text); ?>
+                        <svg style="width: 1rem; height: 1rem; margin-left: 0.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
                 </div>
-                <h3 style="font-size: 1.5rem; font-weight: 600; color: #1e3a2d; margin-bottom: 0.75rem; font-family: Georgia, serif;">Funerals & Memorials</h3>
-                <p style="color: #666; margin-bottom: 1rem; line-height: 1.6;">
-                    Warm, authentic, and compassionate services that honour the life lived. Creating a dignified and personal tribute that brings comfort and reflection.
-                </p>
-                <a href="#contact" style="color: #1e3a2d; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center;">
-                    Arrange a Tribute
-                    <svg style="width: 1rem; height: 1rem; margin-left: 0.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
-                    </svg>
-                </a>
+
+                <?php endwhile; wp_reset_postdata(); ?>
             </div>
-        </div>
+        <?php else : ?>
+            <!-- Fallback: Show hardcoded services if none exist yet -->
+            <div class="grid-services">
+                <!-- Child Naming -->
+                <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; border: 1px solid #c8d4c0; transition: box-shadow 0.3s;">
+                    <div style="width: 7rem; height: 7rem; background: #1e3a2d; border-radius: 50%; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center;">
+                        <svg style="width: 4rem; height: 4rem; color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-weight: 600; color: #1e3a2d; margin-bottom: 0.75rem; font-family: Georgia, serif;">Child Naming Ceremonies</h3>
+                    <p style="color: #666; margin-bottom: 1rem; line-height: 1.6;">
+                        A non-religious, joyful celebration of new life. Honouring the child and welcoming them into the community with meaningful readings and symbolic acts.
+                    </p>
+                    <a href="#contact" style="color: #1e3a2d; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center;">
+                        Celebrate Your Child
+                        <svg style="width: 1rem; height: 1rem; margin-left: 0.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+
+                <!-- Funerals -->
+                <div style="background: white; padding: 2rem; border-radius: 0.75rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); text-align: center; border: 1px solid #c8d4c0; transition: box-shadow 0.3s;">
+                    <div style="width: 7rem; height: 7rem; background: #1e3a2d; border-radius: 50%; margin: 0 auto 1.5rem; display: flex; align-items: center; justify-content: center;">
+                        <svg style="width: 4rem; height: 4rem; color: white;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                    </div>
+                    <h3 style="font-size: 1.5rem; font-weight: 600; color: #1e3a2d; margin-bottom: 0.75rem; font-family: Georgia, serif;">Funerals & Memorials</h3>
+                    <p style="color: #666; margin-bottom: 1rem; line-height: 1.6;">
+                        Warm, authentic, and compassionate services that honour the life lived. Creating a dignified and personal tribute that brings comfort and reflection.
+                    </p>
+                    <a href="#contact" style="color: #1e3a2d; text-decoration: none; font-weight: 600; display: inline-flex; align-items: center;">
+                        Arrange a Tribute
+                        <svg style="width: 1rem; height: 1rem; margin-left: 0.5rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
+                        </svg>
+                    </a>
+                </div>
+            </div>
+        <?php endif; ?>
     </div>
 </section>
 
@@ -582,45 +653,69 @@
         </div>
 
         <div style="display: flex; flex-direction: column; gap: 1.5rem;">
-            <!-- FAQ 1 -->
-            <details style="background: white; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-left: 8px solid #1e3a2d;">
-                <summary style="font-size: 1.25rem; font-weight: bold; color: #1e3a2d; cursor: pointer; list-style: none;">
-                    Are you legally registered in Ontario?
-                </summary>
-                <p style="color: #374151; margin-top: 1rem; line-height: 1.6;">
-                    Yes! I am a fully licensed Ontario Celebrant through Humanist Canada, authorized to perform legally binding weddings anywhere in the province. All paperwork and registration is handled professionally.
-                </p>
-            </details>
+            <?php
+            // Query FAQs
+            $faqs = new WP_Query(array(
+                'post_type' => 'faq',
+                'posts_per_page' => -1,
+                'orderby' => 'menu_order',
+                'order' => 'ASC'
+            ));
 
-            <!-- FAQ 2 -->
-            <details style="background: white; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-left: 8px solid #1e3a2d;">
-                <summary style="font-size: 1.25rem; font-weight: bold; color: #1e3a2d; cursor: pointer; list-style: none;">
-                    How far in advance should I book?
-                </summary>
-                <p style="color: #374151; margin-top: 1rem; line-height: 1.6;">
-                    I recommend booking 6-12 months in advance, especially for peak wedding season (May-October). However, I can accommodate shorter timelines when possible. Contact me to check my availability for your date.
-                </p>
-            </details>
+            if ($faqs->have_posts()) :
+                while ($faqs->have_posts()) : $faqs->the_post();
+                    $answer = get_post_meta(get_the_ID(), '_faq_answer', true);
+                    ?>
+                    <details style="background: white; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-left: 8px solid #1e3a2d;">
+                        <summary style="font-size: 1.25rem; font-weight: bold; color: #1e3a2d; cursor: pointer; list-style: none;">
+                            <?php the_title(); ?>
+                        </summary>
+                        <p style="color: #374151; margin-top: 1rem; line-height: 1.6;">
+                            <?php echo wp_kses_post($answer); ?>
+                        </p>
+                    </details>
+                <?php
+                endwhile;
+                wp_reset_postdata();
+            else :
+                // Fallback FAQs if none are created yet
+                ?>
+                <details style="background: white; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-left: 8px solid #1e3a2d;">
+                    <summary style="font-size: 1.25rem; font-weight: bold; color: #1e3a2d; cursor: pointer; list-style: none;">
+                        Are you legally registered in Ontario?
+                    </summary>
+                    <p style="color: #374151; margin-top: 1rem; line-height: 1.6;">
+                        Yes! I am a fully licensed Ontario Celebrant through Humanist Canada, authorized to perform legally binding weddings anywhere in the province. All paperwork and registration is handled professionally.
+                    </p>
+                </details>
 
-            <!-- FAQ 3 -->
-            <details style="background: white; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-left: 8px solid #1e3a2d;">
-                <summary style="font-size: 1.25rem; font-weight: bold; color: #1e3a2d; cursor: pointer; list-style: none;">
-                    What is a handfasting ceremony?
-                </summary>
-                <p style="color: #374151; margin-top: 1rem; line-height: 1.6;">
-                    Handfasting is an ancient Celtic tradition where couples' hands are tied together with ribbons or cords, symbolizing the binding of two lives. It's a beautiful, visual ritual that can be incorporated into your ceremony and personalized with meaningful colors and symbolism.
-                </p>
-            </details>
+                <details style="background: white; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-left: 8px solid #1e3a2d;">
+                    <summary style="font-size: 1.25rem; font-weight: bold; color: #1e3a2d; cursor: pointer; list-style: none;">
+                        How far in advance should I book?
+                    </summary>
+                    <p style="color: #374151; margin-top: 1rem; line-height: 1.6;">
+                        I recommend booking 6-12 months in advance, especially for peak wedding season (May-October). However, I can accommodate shorter timelines when possible. Contact me to check my availability for your date.
+                    </p>
+                </details>
 
-            <!-- FAQ 4 -->
-            <details style="background: white; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-left: 8px solid #1e3a2d;">
-                <summary style="font-size: 1.25rem; font-weight: bold; color: #1e3a2d; cursor: pointer; list-style: none;">
-                    Can we write our own vows?
-                </summary>
-                <p style="color: #374151; margin-top: 1rem; line-height: 1.6;">
-                    Of course! You can write your own vows, use traditional vows, or work with me to craft something unique. I can provide guidance, templates, and feedback to help you create vows that feel authentic and meaningful to you.
-                </p>
-            </details>
+                <details style="background: white; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-left: 8px solid #1e3a2d;">
+                    <summary style="font-size: 1.25rem; font-weight: bold; color: #1e3a2d; cursor: pointer; list-style: none;">
+                        What is a handfasting ceremony?
+                    </summary>
+                    <p style="color: #374151; margin-top: 1rem; line-height: 1.6;">
+                        Handfasting is an ancient Celtic tradition where couples' hands are tied together with ribbons or cords, symbolizing the binding of two lives. It's a beautiful, visual ritual that can be incorporated into your ceremony and personalized with meaningful colors and symbolism.
+                    </p>
+                </details>
+
+                <details style="background: white; border-radius: 0.75rem; padding: 1.5rem; box-shadow: 0 4px 6px rgba(0,0,0,0.1); border-left: 8px solid #1e3a2d;">
+                    <summary style="font-size: 1.25rem; font-weight: bold; color: #1e3a2d; cursor: pointer; list-style: none;">
+                        Can we write our own vows?
+                    </summary>
+                    <p style="color: #374151; margin-top: 1rem; line-height: 1.6;">
+                        Of course! You can write your own vows, use traditional vows, or work with me to craft something unique. I can provide guidance, templates, and feedback to help you create vows that feel authentic and meaningful to you.
+                    </p>
+                </details>
+            <?php endif; ?>
         </div>
     </div>
 </section>

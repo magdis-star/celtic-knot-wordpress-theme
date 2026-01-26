@@ -6,6 +6,12 @@
 // Safe get_field wrapper for ACF
 function celtic_knot_get_field($field_name, $post_id = false, $default = '') {
     if (function_exists('get_field')) {
+        // If 'option' is passed, get the Homepage Settings page ID instead
+        if ($post_id === 'option') {
+            $settings_page = get_page_by_title('Homepage Settings');
+            $post_id = $settings_page ? $settings_page->ID : false;
+        }
+
         $value = get_field($field_name, $post_id);
         return $value ? $value : $default;
     }
@@ -274,25 +280,7 @@ function celtic_knot_register_testimonials() {
 }
 add_action('init', 'celtic_knot_register_testimonials');
 
-// Register custom post type for Services
-function celtic_knot_register_services() {
-    $args = array(
-        'labels' => array(
-            'name' => __('Services', 'celtic-knot'),
-            'singular_name' => __('Service', 'celtic-knot'),
-            'add_new' => __('Add New Service', 'celtic-knot'),
-            'add_new_item' => __('Add New Service', 'celtic-knot'),
-            'edit_item' => __('Edit Service', 'celtic-knot'),
-        ),
-        'public' => true,
-        'has_archive' => false,
-        'menu_icon' => 'dashicons-heart',
-        'supports' => array('title', 'editor', 'thumbnail'),
-        'show_in_rest' => true,
-    );
-    register_post_type('service', $args);
-}
-add_action('init', 'celtic_knot_register_services');
+// Note: Old "Services" custom post type removed - we only use "Other Services" below
 
 // Register custom post type for Gallery
 function celtic_knot_register_gallery() {
@@ -334,6 +322,48 @@ function celtic_knot_register_packages() {
 }
 add_action('init', 'celtic_knot_register_packages');
 
+// Register custom post type for Other Services (Child Naming, Funerals, etc.)
+function celtic_knot_register_other_services() {
+    $args = array(
+        'labels' => array(
+            'name' => __('Other Services', 'celtic-knot'),
+            'singular_name' => __('Other Service', 'celtic-knot'),
+            'add_new' => __('Add New Service', 'celtic-knot'),
+            'add_new_item' => __('Add New Other Service', 'celtic-knot'),
+            'edit_item' => __('Edit Other Service', 'celtic-knot'),
+        ),
+        'public' => true,
+        'has_archive' => false,
+        'menu_icon' => 'dashicons-groups',
+        'supports' => array('title', 'editor', 'page-attributes'),
+        'show_in_rest' => true,
+        'description' => 'Other meaningful ceremonies (Child Naming, Funerals, etc.)',
+    );
+    register_post_type('other_service', $args);
+}
+add_action('init', 'celtic_knot_register_other_services');
+
+// Register custom post type for FAQs
+function celtic_knot_register_faqs() {
+    $args = array(
+        'labels' => array(
+            'name' => __('FAQs', 'celtic-knot'),
+            'singular_name' => __('FAQ', 'celtic-knot'),
+            'add_new' => __('Add New FAQ', 'celtic-knot'),
+            'add_new_item' => __('Add New FAQ', 'celtic-knot'),
+            'edit_item' => __('Edit FAQ', 'celtic-knot'),
+        ),
+        'public' => true,
+        'has_archive' => false,
+        'menu_icon' => 'dashicons-editor-help',
+        'supports' => array('title', 'page-attributes'),
+        'show_in_rest' => true,
+        'description' => 'Frequently Asked Questions for the homepage',
+    );
+    register_post_type('faq', $args);
+}
+add_action('init', 'celtic_knot_register_faqs');
+
 // Add meta boxes for package details
 function celtic_knot_add_package_meta_boxes() {
     add_meta_box(
@@ -347,6 +377,32 @@ function celtic_knot_add_package_meta_boxes() {
 }
 add_action('add_meta_boxes', 'celtic_knot_add_package_meta_boxes');
 
+// Add meta boxes for other service details
+function celtic_knot_add_other_service_meta_boxes() {
+    add_meta_box(
+        'other_service_details',
+        'Service Details',
+        'celtic_knot_other_service_details_callback',
+        'other_service',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'celtic_knot_add_other_service_meta_boxes');
+
+// Add meta boxes for FAQ details
+function celtic_knot_add_faq_meta_boxes() {
+    add_meta_box(
+        'faq_details',
+        'FAQ Answer',
+        'celtic_knot_faq_details_callback',
+        'faq',
+        'normal',
+        'high'
+    );
+}
+add_action('add_meta_boxes', 'celtic_knot_add_faq_meta_boxes');
+
 // Meta box callback
 function celtic_knot_package_details_callback($post) {
     wp_nonce_field('celtic_knot_save_package_meta', 'celtic_knot_package_nonce');
@@ -354,6 +410,7 @@ function celtic_knot_package_details_callback($post) {
     $price = get_post_meta($post->ID, '_package_price', true);
     $most_popular = get_post_meta($post->ID, '_package_most_popular', true);
     $features = get_post_meta($post->ID, '_package_features', true);
+    $display_order = $post->menu_order;
     ?>
     <p>
         <label for="package_price"><strong>Price (numbers only, e.g., 650):</strong></label><br>
@@ -364,6 +421,11 @@ function celtic_knot_package_details_callback($post) {
             <input type="checkbox" name="package_most_popular" value="1" <?php checked($most_popular, '1'); ?>>
             <strong>Mark as "Most Popular"</strong> (only check one package)
         </label>
+    </p>
+    <p>
+        <label for="package_order"><strong>Display Order (0=first/left, 1=second, 2=third, etc.):</strong></label><br>
+        <input type="number" id="package_order" name="package_order" value="<?php echo esc_attr($display_order); ?>" style="width: 100px;" min="0" step="1">
+        <br><em>Controls left-to-right display on homepage. Lower numbers appear first.</em>
     </p>
     <p>
         <label for="package_features"><strong>Features (one per line):</strong></label><br>
@@ -398,20 +460,155 @@ function celtic_knot_save_package_meta($post_id) {
     if (isset($_POST['package_features'])) {
         update_post_meta($post_id, '_package_features', sanitize_textarea_field($_POST['package_features']));
     }
+
+    // Save display order
+    if (isset($_POST['package_order'])) {
+        $order = intval($_POST['package_order']);
+        wp_update_post(array(
+            'ID' => $post_id,
+            'menu_order' => $order
+        ));
+    }
 }
 add_action('save_post_service_package', 'celtic_knot_save_package_meta');
 
-// Add ACF options page for homepage settings (requires ACF plugin)
-if (function_exists('acf_add_options_page')) {
-    acf_add_options_page(array(
-        'page_title' => 'Homepage Settings',
-        'menu_title' => 'Homepage Settings',
-        'menu_slug' => 'homepage-settings',
-        'capability' => 'edit_posts',
-        'icon_url' => 'dashicons-admin-home',
-        'redirect' => false
-    ));
+// Meta box callback for other services
+function celtic_knot_other_service_details_callback($post) {
+    wp_nonce_field('celtic_knot_save_other_service_meta', 'celtic_knot_other_service_nonce');
+
+    $icon_type = get_post_meta($post->ID, '_service_icon', true);
+    $button_text = get_post_meta($post->ID, '_service_button_text', true);
+    $display_order = $post->menu_order;
+    ?>
+    <p>
+        <label for="service_icon"><strong>Icon Type:</strong></label><br>
+        <select id="service_icon" name="service_icon" style="width: 300px;">
+            <option value="child" <?php selected($icon_type, 'child'); ?>>Child/Family (Child Naming)</option>
+            <option value="heart" <?php selected($icon_type, 'heart'); ?>>Heart (Funerals/Memorials)</option>
+            <option value="users" <?php selected($icon_type, 'users'); ?>>People/Community</option>
+            <option value="celebrate" <?php selected($icon_type, 'celebrate'); ?>>Celebration</option>
+        </select>
+    </p>
+    <p>
+        <label for="service_button_text"><strong>Button Text:</strong></label><br>
+        <input type="text" id="service_button_text" name="service_button_text" value="<?php echo esc_attr($button_text); ?>" style="width: 100%;" placeholder="e.g., Celebrate Your Child">
+    </p>
+    <p>
+        <label for="service_order"><strong>Display Order (0=first/left, 1=second, etc.):</strong></label><br>
+        <input type="number" id="service_order" name="service_order" value="<?php echo esc_attr($display_order); ?>" style="width: 100px;" min="0" step="1">
+        <br><em>Controls left-to-right display on homepage. Lower numbers appear first.</em>
+    </p>
+    <p>
+        <em><strong>Note:</strong> The service title and description are entered in the main editor above.</em>
+    </p>
+    <?php
 }
+
+// Save other service meta
+function celtic_knot_save_other_service_meta($post_id) {
+    if (!isset($_POST['celtic_knot_other_service_nonce']) || !wp_verify_nonce($_POST['celtic_knot_other_service_nonce'], 'celtic_knot_save_other_service_meta')) {
+        return;
+    }
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+
+    if (isset($_POST['service_icon'])) {
+        update_post_meta($post_id, '_service_icon', sanitize_text_field($_POST['service_icon']));
+    }
+
+    if (isset($_POST['service_button_text'])) {
+        update_post_meta($post_id, '_service_button_text', sanitize_text_field($_POST['service_button_text']));
+    }
+
+    // Save display order
+    if (isset($_POST['service_order'])) {
+        $order = intval($_POST['service_order']);
+        wp_update_post(array(
+            'ID' => $post_id,
+            'menu_order' => $order
+        ));
+    }
+}
+add_action('save_post_other_service', 'celtic_knot_save_other_service_meta');
+
+// Meta box callback for FAQs
+function celtic_knot_faq_details_callback($post) {
+    wp_nonce_field('celtic_knot_save_faq_meta', 'celtic_knot_faq_nonce');
+
+    $answer = get_post_meta($post->ID, '_faq_answer', true);
+    $display_order = $post->menu_order;
+    ?>
+    <p>
+        <em><strong>Note:</strong> The FAQ question is entered in the "Title" field above.</em>
+    </p>
+    <p>
+        <label for="faq_answer"><strong>Answer:</strong></label><br>
+        <textarea id="faq_answer" name="faq_answer" rows="5" style="width: 100%;"><?php echo esc_textarea($answer); ?></textarea>
+        <br><em>Type the answer to this frequently asked question.</em>
+    </p>
+    <p>
+        <label for="faq_order"><strong>Display Order (0=first/top, 1=second, etc.):</strong></label><br>
+        <input type="number" id="faq_order" name="faq_order" value="<?php echo esc_attr($display_order); ?>" style="width: 100px;" min="0" step="1">
+        <br><em>Controls top-to-bottom display on homepage. Lower numbers appear first.</em>
+    </p>
+    <?php
+}
+
+// Save FAQ meta
+function celtic_knot_save_faq_meta($post_id) {
+    if (!isset($_POST['celtic_knot_faq_nonce']) || !wp_verify_nonce($_POST['celtic_knot_faq_nonce'], 'celtic_knot_save_faq_meta')) {
+        return;
+    }
+    if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {
+        return;
+    }
+    if (!current_user_can('edit_post', $post_id)) {
+        return;
+    }
+
+    if (isset($_POST['faq_answer'])) {
+        update_post_meta($post_id, '_faq_answer', wp_kses_post($_POST['faq_answer']));
+    }
+
+    // Save display order
+    if (isset($_POST['faq_order'])) {
+        $order = intval($_POST['faq_order']);
+        wp_update_post(array(
+            'ID' => $post_id,
+            'menu_order' => $order
+        ));
+    }
+}
+add_action('save_post_faq', 'celtic_knot_save_faq_meta');
+
+// Create Homepage Settings page automatically (on theme activation)
+function celtic_knot_create_homepage_settings_page() {
+    // Check if page already exists
+    $page_check = get_page_by_title('Homepage Settings');
+
+    if (!isset($page_check->ID)) {
+        // Create the page
+        $page_id = wp_insert_post(array(
+            'post_title' => 'Homepage Settings',
+            'post_content' => 'This page is used to manage homepage content. Edit the fields below to update your Hero section and My Story section.',
+            'post_status' => 'publish',
+            'post_type' => 'page',
+            'post_author' => 1,
+            'page_template' => 'template-homepage-settings.php'
+        ));
+
+        // Set page to private so it doesn't show in menus
+        wp_update_post(array(
+            'ID' => $page_id,
+            'post_status' => 'draft'
+        ));
+    }
+}
+add_action('after_switch_theme', 'celtic_knot_create_homepage_settings_page');
 
 // Register ACF fields for homepage
 if (function_exists('acf_add_local_field_group')) {
@@ -486,9 +683,9 @@ if (function_exists('acf_add_local_field_group')) {
         'location' => array(
             array(
                 array(
-                    'param' => 'options_page',
+                    'param' => 'page_template',
                     'operator' => '==',
-                    'value' => 'homepage-settings',
+                    'value' => 'template-homepage-settings.php',
                 ),
             ),
         ),
